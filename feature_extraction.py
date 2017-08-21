@@ -6,6 +6,7 @@ from sklearn.feature_extraction import DictVectorizer
 from sklearn.feature_extraction import FeatureHasher
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
+from sklearn.feature_extraction.text import HashingVectorizer
 
 from datasets import Datasets
 from pprint import pprint
@@ -47,6 +48,9 @@ def main():
     print tfidft_datasets.toarray()
     print tfidf_transformer.idf_
 
+    hash_vectorizer = HashingVectorizer(n_features=100, decode_error="ignore")
+    hv_datasets = hash_vectorizer.fit_transform(datasets)
+    print hv_datasets.toarray().shape
 
 
 if __name__ == "__main__":
