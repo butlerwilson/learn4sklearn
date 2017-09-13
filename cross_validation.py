@@ -1,11 +1,16 @@
 # -*- coding: utf-8 -*-
 
-import numpy as np
 from sklearn import datasets
+
+from sklearn import svm
 
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import cross_val_score
-from sklearn import svm
+from sklearn.model_selection import ShuffleSplit
+from sklearn.model_selection import cross_validate
+from sklearn.model_selection import KFold
+from sklearn.model_selection import LeaveOneOut
+
 
 def main():
     iris = datasets.load_iris()
@@ -16,6 +21,23 @@ def main():
     scores = cross_val_score(clf, iris.data, iris.target, cv=5)
     print scores
     print scores.mean(), scores.std()
+
+    cv = ShuffleSplit(n_splits=3, test_size=0.3)
+    scores = cross_val_score(clf, X_train, y_train, cv=cv)
+    print scores
+
+    scoring = ['precision_macro', 'recall_macro']
+    scores = cross_validate(clf, X_train, y_train, scoring=scoring)
+    print scores.keys()
+    print scores["test_precision_macro"]
+
+    kf = KFold(n_splits=10)
+    #for train, test in kf.split(X_train):
+    #    print "%s, %s" % (train, test)
+
+    loo = LeaveOneOut()
+    #for train, test in loo.split(X_train):
+    #    print "%s, %s" % (train, test)
 
 if __name__ == '__main__':
     main()
